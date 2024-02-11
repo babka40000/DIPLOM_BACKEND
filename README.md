@@ -149,6 +149,14 @@ python manage.py migrate
 python manage.py collectstatic
 ```
 
+## Создаем администратора.
+
+Обязательно нужно создать super user`а. Это первый пользователь, который в системе всегда будет администратором. Остальных администратоов может создать superuser
+
+```
+python manage.py createsuperuser
+```
+
 ## Устанавливаем и настраиваем gunicorn
 
 Gunicorn - специальная программа для связи веб-сервера (например nginx) и Django.
