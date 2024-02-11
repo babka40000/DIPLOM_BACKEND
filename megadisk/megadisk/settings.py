@@ -10,11 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import environ
 from pathlib import Path
+
+root = environ.Path(__file__) - 3
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -23,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^_lp=8t=id0&j+it**%#lx*8a#om=tgesf+01kd2mk@bf68&s-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [env.str('DJANGO_ALLOWED_HOSTS')]
 
 # Application definition
 
@@ -75,24 +79,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'megadisk.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'megadisk',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'USER': 'postgres',
-        'PASSWORD': 'fhntvrf@25',
+        'NAME': env.str('DJANGO_DB_NAME'),
+        'HOST': env.str('DJANGO_DB_HOST'),
+        'PORT': env.int('DJANGO_DB_PORT'),
+        'USER': env.str('DJANGO_DB_USER'),
+        'PASSWORD': env.str('DJANGO_DB_PASSWORD'),
     }
 }
 
@@ -137,27 +131,24 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS_ORIGIN_ALLOW_ALL = True
-
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    env.str('DJANGO_CORS_CSRF_ALLOW'),
 )
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    env.str('DJANGO_CORS_CSRF_ALLOW'),
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    env.str('DJANGO_CORS_CSRF_ALLOW'),
 ]
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_TRUSTED_ORIGINS = [
+    env.str('DJANGO_CORS_CSRF_ALLOW'),
+]
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
