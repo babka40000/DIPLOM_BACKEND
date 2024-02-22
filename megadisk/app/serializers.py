@@ -40,7 +40,11 @@ class FilesAndFoldersSerializer(serializers.ModelSerializer):
         read_only_fields = ('user', )
 
     def create(self, validated_data):
-        validated_data["user"] = self.context["request"].user
+        if 'usr' in self.context["request"].query_params \
+                and (self.context["request"].user.is_staff or self.context["request"].user.is_superuser):
+            validated_data["user"] = User.objects.get(id=self.context["request"].query_params['usr'])
+        else:
+            validated_data["user"] = self.context["request"].user
 
         if validated_data["is_folder"]:
             validated_data["name"] = 'Новая папка'
