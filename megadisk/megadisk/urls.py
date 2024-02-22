@@ -24,8 +24,6 @@ from app.views import home_view, FilesAndFoldersViewSet, auth_login_view, auth_g
                       auth_register_view, AdminOperationsViewSet
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
     path('api/v1/auth/login/', auth_login_view, name='login'),
     path('api/v1/auth/logout/', auth_logout_view, name='logout'),
     path('api/v1/auth/register/', auth_register_view, name='register'),
